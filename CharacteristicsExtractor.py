@@ -24,5 +24,15 @@ class CharacteristicsExtractor:
                 img = cv.imread(path_training_images + "/" + folder + "/" + file, 1)
 
                 imgCopy = img.copy()
+                dst=img.copy()
                 imgCopy  = cv.cvtColor(imgCopy, cv.COLOR_BGR2GRAY)
-                cv.imshow("Img prueba", imgCopy)
+                cv.equalizeHist( imgCopy, dst );
+                cv.resize(dst, (32, 32),interpolation=cv.INTER_LINEAR)
+                
+                hog = cv.HOGDescriptor(_winSize=(32,32),_blockSize=(16,16),_blockStride=(8,8),_cellSize=(8,8),_nbins=9)
+                
+                hist = hog.compute(dst)
+                
+                img_list.append(hist)
+                """"""
+                #cv.imshow("Img prueba", imgCopy)
