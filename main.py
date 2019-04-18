@@ -1,6 +1,7 @@
 from CharacteristicsExtractor import CharacteristicsExtractor
 from SignalRecognizer import SignalRecognizer
-
+from sklearn.preprocessing import StandardScaler
+import numpy as np
 def main():
     ch_ext = CharacteristicsExtractor()
     #while True:
@@ -11,10 +12,15 @@ def main():
 
     formatted_classes = []
     formatted_vectors = []
-
+    standar_scaler = StandardScaler(copy=True, with_mean=True, with_std=True)
     for obj_ch_vector in ch_vectors_by_class:
-        formatted_classes.append(obj_ch_vector.get_belonging_class())
-        formatted_vectors.append(obj_ch_vector.get_characteristics_vector())
+        if(not formatted_classes.__contains__(obj_ch_vector.get_belonging_class())):
+            formatted_classes.append(obj_ch_vector.get_belonging_class())
+        formatted_vector=np.array(obj_ch_vector.get_characteristics_vector(),np.float64)
+        """
+        formatted_vector=standar_scaler.fit_transform(np.array(obj_ch_vector.get_characteristics_vector(),np.float64))
+        """
+        formatted_vectors.append(formatted_vector)
 
     # print(formatted_classes)
 
@@ -26,6 +32,7 @@ def main():
 """
         if cv.waitKey(5) == 27:
             break
+       
 """
     #cv.destroyAllWindows()
 
