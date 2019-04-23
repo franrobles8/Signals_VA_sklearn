@@ -2,6 +2,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
+from CharacteristicsExtractor import CharacteristicsExtractor
 import numpy as np
 import cv2 as cv
 import os
@@ -27,8 +28,9 @@ class SignalRecognizer:
         for t in formatted_vectors:
             print(len(t))
       
-        x =np.asarray(formatted_vectors)
+        x =np.array(formatted_vectors)[:,:,-1]
         
+        #x = formatted_vectors[:,:,-1]
         y = formatted_classes
         """
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)
@@ -37,14 +39,7 @@ class SignalRecognizer:
         """
        
         
-        X_test = []
-        extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
-        file_names = [file for file in os.listdir("./test_reconocimiento") if
-                          not file.endswith(".DS_Store")and not file.endswith(".directory") and any(file.endswith(extension) for extension in extensions)]
-        for file in file_names:
-            print(file)
-            img = cv.imread("./test_reconocimiento/" + file, 1)
-            X_test.append(img)
+       
         """
         X_train = standar_scaler.fit_transform(x)
         
@@ -53,10 +48,11 @@ class SignalRecognizer:
         # Creamos el objeto LDA
         lda = LinearDiscriminantAnalysis(solver='svd',n_components=len(y)-1)
         # Creamos la matriz de proyección y
+        lda.fit(x,y)
+        x = lda.transform(x)
+        lda.fit(x,y)
         
-        X_train = lda.fit(x,y)
         
-        X_test = lda.transform(X_test)
 
         # Predecimos los resultados de Test
         """
@@ -65,8 +61,16 @@ class SignalRecognizer:
         y_pred = classifier.predict(X_test)
         """
         
-        y_pred = lda.predict(X_test)
-        print(y_pred)
+        extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
+        file_names = [file for file in os.listdir("./test_reconocimiento") if
+                          not file.endswith(".DS_Store")and not file.endswith(".directory") and any(file.endswith(extension) for extension in extensions)]
+        for file in file_names:
+            print(file)
+            
+            ch_ext = CharacteristicsExtractor()
+            characteristics_vector=ch_ext.extract_characteristics_vector("./test_reconocimiento/" + file)
+            y_pred = lda.predict(characteristics_vector)
+            print(y_pred)
 
 
     # def prepare_dataset(self, ch_vectors):
