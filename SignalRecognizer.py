@@ -43,10 +43,10 @@ class SignalRecognizer:
         """
         X_train = standar_scaler.fit_transform(x)
         
-        X_test = standar_scaler.transform(X_test)
+        X_test = standar_scaler.transform(X_test)len(y)-1
         """
         # Creamos el objeto LDA
-        lda = LinearDiscriminantAnalysis(solver='svd',n_components=len(y)-1)
+        lda = LinearDiscriminantAnalysis(solver='svd',n_components=35)
         # Creamos la matriz de proyección y
         lda.fit(x,y)
         x = lda.transform(x)
@@ -63,14 +63,23 @@ class SignalRecognizer:
         
         extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
         file_names = [file for file in os.listdir("./test_reconocimiento") if
-                          not file.endswith(".DS_Store")and not file.endswith(".directory") and any(file.endswith(extension) for extension in extensions)]
+                       not file.endswith(".DS_Store")and not file.endswith(".directory") and any(file.endswith(extension) for extension in extensions)]
+        test=[]
+        etiquetasTest  =[]
         for file in file_names:
             print(file)
-            
+            etiquetasTest.append(file.split("-")[0])
             ch_ext = CharacteristicsExtractor()
             characteristics_vector=ch_ext.extract_characteristics_vector("./test_reconocimiento/" + file)
-            y_pred = lda.predict(characteristics_vector)
-            print(y_pred)
+            test.append(characteristics_vector[:,-1])
+        
+        test=np.array(test)
+        ldaTest = LinearDiscriminantAnalysis(solver='svd',n_components=42)
+        # Creamos la matriz de proyección y
+        ldaTest.fit(test,etiquetasTest)
+        test = ldaTest.transform(test)
+        y_pred = lda.predict(test)
+        print(y_pred)
 
 
     # def prepare_dataset(self, ch_vectors):
