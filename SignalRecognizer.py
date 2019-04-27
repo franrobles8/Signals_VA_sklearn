@@ -39,14 +39,14 @@ class SignalRecognizer:
         """
        
         
-       
+        """solver='svd',"""
         """
         X_train = standar_scaler.fit_transform(x)
         
         X_test = standar_scaler.transform(X_test)len(y)-1
         """
         # Creamos el objeto LDA
-        lda = LinearDiscriminantAnalysis(solver='svd',n_components=35)
+        lda = LinearDiscriminantAnalysis(n_components=35)
         # Creamos la matriz de proyección y
         lda.fit(x,y)
         x = lda.transform(x)
@@ -71,13 +71,19 @@ class SignalRecognizer:
             etiquetasTest.append(file.split("-")[0])
             ch_ext = CharacteristicsExtractor()
             characteristics_vector=ch_ext.extract_characteristics_vector("./test_reconocimiento/" + file)
-            test.append(characteristics_vector[:,-1])
-        
+            test.append(characteristics_vector[:,-1])            
+            
+            
         test=np.array(test)
-        ldaTest = LinearDiscriminantAnalysis(solver='svd',n_components=42)
+        
+        ldaTest = LinearDiscriminantAnalysis(n_components=35)
+        """
+        solver='svd',
         # Creamos la matriz de proyección y
-        ldaTest.fit(test,etiquetasTest)
-        test = ldaTest.transform(test)
+        ldaTest.fit(test,y)
+        """
+        test = ldaTest.fit_transform(test,etiquetasTest)
+        
         y_pred = lda.predict(test)
         print(y_pred)
 
