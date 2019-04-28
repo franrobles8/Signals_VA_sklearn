@@ -28,7 +28,7 @@ class SignalRecognizer:
         for t in formatted_vectors:
             print(len(t))
       
-        x =np.array(formatted_vectors)[:,:,-1]
+        x = np.array(formatted_vectors)[:,:,-1]
         
         #x = formatted_vectors[:,:,-1]
         y = formatted_classes
@@ -46,12 +46,13 @@ class SignalRecognizer:
         X_test = standar_scaler.transform(X_test)len(y)-1
         """
         # Creamos el objeto LDA
-        lda = LinearDiscriminantAnalysis(n_components=35)
+        lda = LinearDiscriminantAnalysis(n_components=42)
         # Creamos la matriz de proyección y
-        lda.fit(x,y)
-        x = lda.transform(x)
-        lda.fit(x,y)
-        
+        # lda.fit(x,y)
+        # x = lda.transform(x)
+        # lda.fit(x, y)
+        x = lda.fit_transform(x, y)
+
         
 
         # Predecimos los resultados de Test
@@ -63,7 +64,7 @@ class SignalRecognizer:
         
         extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
         file_names = [file for file in os.listdir("./test_reconocimiento") if
-                       not file.endswith(".DS_Store")and not file.endswith(".directory") and any(file.endswith(extension) for extension in extensions)]
+                       not file.endswith(".DS_Store") and not file.endswith(".directory") and any(file.endswith(extension) for extension in extensions)]
         test=[]
         etiquetasTest  =[]
         for file in file_names:
@@ -76,13 +77,16 @@ class SignalRecognizer:
             
         test=np.array(test)
         
-        ldaTest = LinearDiscriminantAnalysis(n_components=35)
+        # ldaTest = LinearDiscriminantAnalysis(n_components=35)
         """
         solver='svd',
         # Creamos la matriz de proyección y
         ldaTest.fit(test,y)
         """
-        test = ldaTest.fit_transform(test,etiquetasTest)
+        # test = ldaTest.fit_transform(test, etiquetasTest)
+        # print(test.shape)
+        # test = lda.transform(test)
+        # print(test.shape)
         
         y_pred = lda.predict(test)
         print(y_pred)
