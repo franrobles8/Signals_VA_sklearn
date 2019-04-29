@@ -1,10 +1,10 @@
 from CharacteristicsExtractor import CharacteristicsExtractor
-from SignalRecognizer import SignalRecognizer
+from SignalReconizerPCA import SignalRecognizer
 import numpy as np
 import sys
 import getopt
 def main():
-    """"""
+    """
     try:
         lista_opciones, args = getopt.getopt(sys.argv[1:], '', ['train_path=', 'test_path=', 'classifier='])
     except getopt.GetoptError as error:
@@ -26,7 +26,7 @@ def main():
     """
     TEST_PATH = "./test_reconocimiento" 
     TRAIN_PATH="./train_recortadas" 
-    """
+    """"""
     #extraemos los vectores de caracteristicas
     ch_ext = CharacteristicsExtractor()
     ch_vectors_by_class = ch_ext.extract_characteristics_vectors(TRAIN_PATH)
