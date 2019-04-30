@@ -24,16 +24,20 @@ class CharacteristicsExtractor:
         
         #equaliza la imagen
         cv.equalizeHist(dst, dst)
-        dst=feature.canny(dst)
+        
         # cambia el tamaña a 32x32
         dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR)
 
-        #extrae el vector de caracteristicas       
+        dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR_EXACT)
+        hist=feature.local_binary_pattern(dst,100,1000)
+        #extrae el vector de caracteristicas
+        """
         hog = cv.HOGDescriptor(_winSize=(32, 32), _blockSize=(16, 16), _blockStride=(8, 8), _cellSize=(8, 8), _nbins=9)
         # winStride -> Se aconseja el doble del blockStride
         winStride = (16, 16)
-        padding = (8, 8)  
+        padding = (8, 8)
         hist = hog.compute(dst,winStride,padding)
+        """
 
         return hist
 
@@ -58,20 +62,22 @@ class CharacteristicsExtractor:
                 #pasa la imagen a niveles de gris
                 imgCopy = cv.cvtColor(imgCopy, cv.COLOR_BGR2GRAY)
                 dst = imgCopy.copy()
-                dst=feature.local_binary_pattern(dst,4,10)
+                
                 #equaliza la imagen
                 cv.equalizeHist(dst, dst)
                 
                 # cambia el tamaña a 32x32
-                dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR_EXACT)
                 
+                dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR_EXACT)
+                hist=feature.local_binary_pattern(dst,100,1000)
                 #extrae el vector de caracteristicas
+                """
                 hog = cv.HOGDescriptor(_winSize=(32, 32), _blockSize=(16, 16), _blockStride=(8, 8), _cellSize=(8, 8), _nbins=9)
                 # winStride -> Se aconseja el doble del blockStride
                 winStride = (16, 16)
                 padding = (8, 8)
                 hist = hog.compute(dst,winStride,padding)
-
+                """
                 computed_list_by_folder.append(ComputedImage(folder, hist))
 
         return computed_list_by_folder

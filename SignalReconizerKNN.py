@@ -4,7 +4,7 @@ Created on Mon Apr 29 19:46:52 2019
 
 @author: adgao
 """
-
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 from CharacteristicsExtractor import CharacteristicsExtractor
 from sklearn.metrics import confusion_matrix
@@ -53,8 +53,8 @@ class SignalRecognizer:
             characteristics_vector=ch_ext.extract_characteristics_vector(TEST_PATH +"/"+ file)
             test.append(characteristics_vector[:,-1])                  
         test=np.array(test)
-        
-        knn=KNeighborsClassifier(n_neighbors=3)
+        test=lda.transform(test)
+        knn=KNeighborsClassifier(n_neighbors=6)
         knn.fit(x, y)
          # Predecimos los resultados de Test
         y_pred = knn.predict(test)
@@ -69,5 +69,13 @@ class SignalRecognizer:
         #calcula la matriz de confusión
         etiquetas=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42"]
         matriz=confusion_matrix(etiquetasTest, y_pred,etiquetas)
+        n_errores = 0
+        for i in range(len(matriz)):
+            for j in range(len(matriz[0])):
+                if i != j:
+                    if matriz[i][j] != 0:
+                        n_errores = n_errores + 1
+        
+        print(n_errores)
         print()
     

@@ -55,7 +55,7 @@ class SignalRecognizer:
             characteristics_vector=ch_ext.extract_characteristics_vector(TEST_PATH +"/"+ file)
             test.append(characteristics_vector[:,-1])                  
         test=np.array(test)
-        
+        test=pca.transform(test)
         
          # Predecimos los resultados de Test
         y_pred = lda.predict(test)

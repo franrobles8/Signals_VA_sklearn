@@ -1,5 +1,5 @@
-from CharacteristicsExtractor import CharacteristicsExtractor
-from SignalReconizerPCA import SignalRecognizer
+from CharacteristicsExtratorCanny import CharacteristicsExtractor
+from SignalReconizerCanny import SignalRecognizer
 import numpy as np
 import sys
 import getopt

@@ -30,7 +30,7 @@ class SignalRecognizer:
         
         # reduce la dimensionalidad de los vectores de caracteristicas y entrena el clasificador
         x = lda.fit_transform(x, y)
-
+        
         #extraemos los vectores de caracteristicas de las imagenes de test
         extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
         file_names = [file for file in os.listdir(TEST_PATH) if
