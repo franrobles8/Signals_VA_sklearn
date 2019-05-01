@@ -25,13 +25,13 @@ class SignalRecognizer:
         x = np.array(formatted_vectors)[:,:,-1]
         y = formatted_classes
         
-        # Creamos el objeto LDA
-        lda = LinearDiscriminantAnalysis(n_components=42)
+        # Creamos el clasificador bayesiano
+        clasificador = LinearDiscriminantAnalysis(n_components=42)
         
         # reduce la dimensionalidad de los vectores de caracteristicas y entrena el clasificador
-        lda2 = LinearDiscriminantAnalysis(n_components=42)
-        x = lda2.fit_transform(x, y)
-        lda.fit(x,y)
+        lda = LinearDiscriminantAnalysis(n_components=42)
+        x = lda.fit_transform(x, y)
+        clasificador.fit(x,y)
         #extraemos los vectores de caracteristicas de las imagenes de test
         extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
         file_names = [file for file in os.listdir(TEST_PATH) if
@@ -48,9 +48,10 @@ class SignalRecognizer:
             test.append(characteristics_vector[:,-1])                  
         test=np.array(test)
         
-        test=lda2.transform(test)
+        # reduce la dimensionalidad de los vectores de caracteristicas de las imagenes de test
+        test=lda.transform(test)
          # Predecimos los resultados de Test
-        y_pred = lda.predict(test)
+        y_pred = clasificador.predict(test)
         print(y_pred)
         
         #escribimos el resultado

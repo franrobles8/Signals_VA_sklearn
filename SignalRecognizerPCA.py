@@ -22,7 +22,7 @@ def write(text):
     f.write(text + "\n")
     f.close()
 
-class SignalRecognizer:
+class SignalRecognizerPCA:
     #dada una lista de los vectores de caracteristicas, una lista de las etiquetas de todas las imagenes de
     #entrenamientod y la ruta de las imagenes de test reduce la dimensionalidad de los vectores de caracteristicas
     #con LDA, entrena el clasificador Bayesiano con Gaussianas y clasifica las imagenes de test
@@ -35,11 +35,11 @@ class SignalRecognizer:
         
         pca=PCA(n_components=42)
         # Creamos el objeto LDA
-        lda = LinearDiscriminantAnalysis(n_components=42)
+        clasificador = LinearDiscriminantAnalysis(n_components=42)
         
         # reduce la dimensionalidad de los vectores de caracteristicas y entrena el clasificador
         x = pca.fit_transform(x, y)
-        lda.fit(x, y)
+        clasificador.fit(x, y)
         #extraemos los vectores de caracteristicas de las imagenes de test
         extensions = ['jpg', 'png', 'bmp', 'jpeg', 'ppm']
         file_names = [file for file in os.listdir(TEST_PATH) if
@@ -58,7 +58,7 @@ class SignalRecognizer:
         test=pca.transform(test)
         
          # Predecimos los resultados de Test
-        y_pred = lda.predict(test)
+        y_pred = clasificador.predict(test)
         print(y_pred)
         
         #escribimos el resultado

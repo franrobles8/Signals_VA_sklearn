@@ -6,7 +6,7 @@ Created on Mon Apr 29 18:37:33 2019
 """
 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from CharacteristicsExtratorCanny import CharacteristicsExtractor
+from CharacteristicsExtractorLBP import CharacteristicsExtractorLBP
 from sklearn.metrics import confusion_matrix
 import numpy as np
 import cv2 as cv
@@ -21,7 +21,7 @@ def write(text):
     f.write(text + "\n")
     f.close()
 
-class SignalRecognizer:
+class SignalRecognizerLBP:
     #dada una lista de los vectores de caracteristicas, una lista de las etiquetas de todas las imagenes de
     #entrenamientod y la ruta de las imagenes de test reduce la dimensionalidad de los vectores de caracteristicas
     #con LDA, entrena el clasificador Bayesiano con Gaussianas y clasifica las imagenes de test
@@ -49,7 +49,7 @@ class SignalRecognizer:
             print(file)
             imagenes.append(file)
             etiquetasTest.append(file.split("-")[0])
-            ch_ext = CharacteristicsExtractor()
+            ch_ext = CharacteristicsExtractorLBP()
             characteristics_vector=ch_ext.extract_characteristics_vector(TEST_PATH +"/"+ file)
             test.append(characteristics_vector[:,-1])                  
         test=np.array(test)

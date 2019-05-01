@@ -21,7 +21,7 @@ def write(text):
     f.write(text + "\n")
     f.close()
 
-class SignalRecognizer:
+class SignalRecognizerKNN:
     #dada una lista de los vectores de caracteristicas, una lista de las etiquetas de todas las imagenes de
     #entrenamientod y la ruta de las imagenes de test reduce la dimensionalidad de los vectores de caracteristicas
     #con LDA, entrena el clasificador Bayesiano con Gaussianas y clasifica las imagenes de test
