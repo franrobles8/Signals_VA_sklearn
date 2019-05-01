@@ -29,7 +29,8 @@ class CharacteristicsExtractor:
         dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR)
 
         dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR_EXACT)
-        hist=feature.local_binary_pattern(dst,100,1000)
+        #hist=feature.local_binary_pattern(dst,100,1000)
+        hist=feature.canny(dst,sigma=3)
         #extrae el vector de caracteristicas
         """
         hog = cv.HOGDescriptor(_winSize=(32, 32), _blockSize=(16, 16), _blockStride=(8, 8), _cellSize=(8, 8), _nbins=9)
@@ -69,7 +70,7 @@ class CharacteristicsExtractor:
                 # cambia el tamaña a 32x32
                 
                 dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR_EXACT)
-                hist=feature.local_binary_pattern(dst,100,1000)
+                #hist=feature.local_binary_pattern(dst,100,1000)
                 #extrae el vector de caracteristicas
                 """
                 hog = cv.HOGDescriptor(_winSize=(32, 32), _blockSize=(16, 16), _blockStride=(8, 8), _cellSize=(8, 8), _nbins=9)
@@ -78,6 +79,7 @@ class CharacteristicsExtractor:
                 padding = (8, 8)
                 hist = hog.compute(dst,winStride,padding)
                 """
+                hist=feature.canny(dst,sigma=3)
                 computed_list_by_folder.append(ComputedImage(folder, hist))
 
         return computed_list_by_folder
