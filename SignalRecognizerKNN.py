@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 29 19:46:52 2019
-
-@author: adgao
-"""
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 from CharacteristicsExtractor import CharacteristicsExtractor
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import f1_score
+from sklearn.metrics import precision_score
 import numpy as np
-import cv2 as cv
+from matplotlib import pyplot as plt
 import os
 def crear_fichero_restultado():
 # Creamos un nuevo fichero resultado.txt
@@ -33,9 +29,11 @@ class SignalRecognizerKNN:
         y = formatted_classes
         
         # Creamos el objeto LDA
+        print("\n\nEntrenando con las imágenes de entrenamiento y reduciendo la dimensión de los vectores de característicias...")
         lda = LinearDiscriminantAnalysis(n_components=42)
         
         # reduce la dimensionalidad de los vectores de caracteristicas y entrena el clasificador
+        print("\n\nReduciendo la dimensión de las imágenes de test...")
         x = lda.fit_transform(x, y)
 
         #extraemos los vectores de caracteristicas de las imagenes de test
@@ -57,7 +55,9 @@ class SignalRecognizerKNN:
         knn=KNeighborsClassifier(n_neighbors=6)
         knn.fit(x, y)
          # Predecimos los resultados de Test
+        print("\n\nClasificando...")
         y_pred = knn.predict(test)
+        print("\n\nVector con los resultados de las clases a las que pertenecen las imágenes...")
         print(y_pred)
         
         #escribimos el resultado
@@ -65,6 +65,8 @@ class SignalRecognizerKNN:
         for predicction in y_pred:
             write(imagenes[i]+"; "+predicction)
             i+=1
+
+        print("\n\nResultados escritos en el fichero resultado.txt")
             
         #calcula la matriz de confusión
         etiquetas=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42"]
@@ -76,6 +78,29 @@ class SignalRecognizerKNN:
                     if matriz[i][j] != 0:
                         n_errores = n_errores + 1
         
-        print(n_errores)
-        print()
-    
+        print("\n\nNúmero de fallos de clasificación: " + str(n_errores) + "/" + str(len(imagenes)))
+
+        # Descomentar las siguientes líneas para visualizar los gráficos/estadísticas
+
+        """
+        plt.matshow(matriz)
+        plt.colorbar()
+        plt.show()
+
+        f1_score_result = f1_score(etiquetasTest, y_pred, average=None)
+
+        print("\n\nResultado del F1 Score...")
+        print(f1_score_result)
+        plt.ylabel("Puntuación")
+        plt.xlabel("Clase")
+        plt.plot(f1_score_result)
+        plt.show()
+
+        precision_score_result = precision_score(etiquetasTest, y_pred, average=None)
+        print("precision_score_result:\n " + str(precision_score_result))
+
+        plt.ylabel("Precisión")
+        plt.xlabel("Clase")
+        plt.plot(precision_score_result)
+        plt.show()
+        """
