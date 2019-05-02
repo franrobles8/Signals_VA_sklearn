@@ -9,7 +9,7 @@ import numpy as np
 import sys
 import getopt
 def main():
-    """ """
+    """ 
     try:
         lista_opciones, args = getopt.getopt(sys.argv[1:], '', ['train_path=', 'test_path=', 'classifier='])
     except getopt.GetoptError as error:
@@ -29,10 +29,11 @@ def main():
         elif opcion == '--classifier':
             CLASSIFIER= valor_opcion
     """
+    
     TEST_PATH = "./test_reconocimiento" 
     TRAIN_PATH="./train_recortadas" 
-    CLASSIFIER= "LBP-LDA-Bayes"
-    """
+    CLASSIFIER= "PCA-Bayes"
+    """"""
     if(CLASSIFIER=="LDA-Bayes"):
         #extraemos los vectores de caracteristicas
         ch_ext = CharacteristicsExtractor()

@@ -78,7 +78,7 @@ class SignalRecognizerPCA:
             for j in range(len(matriz[0])):
                 if i != j:
                     if matriz[i][j] != 0:
-                        n_errores = n_errores + 1
+                        n_errores = n_errores + matriz[i][j]
         
         print("\n\nNúmero de fallos de clasificación: " + str(n_errores) + "/" + str(len(imagenes)))
 
@@ -105,4 +105,4 @@ class SignalRecognizerPCA:
         plt.xlabel("Clase")
         plt.plot(precision_score_result)
         plt.show()
-        """
+        """ 

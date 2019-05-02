@@ -21,8 +21,14 @@ class CharacteristicsExtractorLBP:
         # cambia el tamaña a 32x32
         dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR)
 
-        
-        hist=feature.local_binary_pattern(dst,100,1000)
+        num_points=16
+        radio=11
+        lbp=feature.local_binary_pattern(dst,num_points,radio, method="uniform")
+        (hist,_) = np.histogram(lbp.ravel(),bins=np.arange(0, num_points+ 3),range=(0, num_points+ 2))
+ 
+		# normaliza el histograma
+        hist = hist.astype("float")
+        hist /= (hist.sum() + 1e-7)
         #hist=feature.canny(dst,sigma=3)
         #extrae el vector de caracteristicas
         """
@@ -63,7 +69,14 @@ class CharacteristicsExtractorLBP:
                 # cambia el tamaña a 32x32
                 
                 dst= cv.resize(dst, (32, 32), interpolation=cv.INTER_LINEAR_EXACT)
-                hist=feature.local_binary_pattern(dst,100,1000)
+                num_points=16
+                radio=11
+                lbp=feature.local_binary_pattern(dst,num_points,radio, method="uniform")
+                (hist,_) = np.histogram(lbp.ravel(),bins=np.arange(0, num_points+ 3),range=(0, num_points+ 2))
+         
+        		# normaliza el histograma
+                hist = hist.astype("float")
+                hist /= (hist.sum() + 1e-7)
                 #extrae el vector de caracteristicas
                 """
                 hog = cv.HOGDescriptor(_winSize=(32, 32), _blockSize=(16, 16), _blockStride=(8, 8), _cellSize=(8, 8), _nbins=9)

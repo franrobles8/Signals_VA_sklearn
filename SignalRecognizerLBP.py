@@ -24,7 +24,7 @@ class SignalRecognizerLBP:
         crear_fichero_restultado()        
         for t in formatted_vectors:
             print(len(t))      
-        x = np.array(formatted_vectors)[:,:,-1]
+        x = np.array(formatted_vectors)
         y = formatted_classes
         
         # Creamos el objeto LDA
@@ -47,7 +47,7 @@ class SignalRecognizerLBP:
             etiquetasTest.append(file.split("-")[0])
             ch_ext = CharacteristicsExtractorLBP()
             characteristics_vector=ch_ext.extract_characteristics_vector(TEST_PATH +"/"+ file)
-            test.append(characteristics_vector[:,-1])                  
+            test.append(characteristics_vector)                  
         test=np.array(test)
         
         
@@ -74,7 +74,7 @@ class SignalRecognizerLBP:
             for j in range(len(matriz[0])):
                 if i != j:
                     if matriz[i][j] != 0:
-                        n_errores = n_errores + 1
+                        n_errores = n_errores + matriz[i][j] 
         
         print("\n\nNúmero de fallos de clasificación: " + str(n_errores) + "/" + str(len(imagenes)))
 
